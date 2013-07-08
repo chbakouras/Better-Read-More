@@ -7,18 +7,25 @@ if ( ! class_exists( 'BRM_Default') ) {
 		private static $instance = null;
 
 		private 
-			$core;
+			$core,
+			$settings;
 
 		private function __construct( $core ) {
 
 			$this->core = $core;
+			$this->settings = get_site_option( 'brm' );
 
 			add_action( $this->core->plugin->globals['plugin_hook'] . '_add_admin_meta_boxes', array( $this, 'add_admin_meta_boxes' ) );
 			add_filter( $this->core->plugin->globals['plugin_hook'] . '_add_admin_sub_pages', array( $this, 'add_sub_page' ) );
-			add_action( 'admin_init', array( $this, 'define_settings' ) );
+			add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 
 		}
 
+		/**
+		 * Sets up menu item for Better Read More
+		 * 
+		 * @param array $available_pages array of BWPS settings pages
+		 */
 		function add_sub_page( $available_pages ) {
 
 			$available_pages[] = add_submenu_page(
@@ -43,118 +50,130 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			//add metaboxes
 			add_meta_box( 
-				'default_module_intro', 
-				__( 'Default Module Intro', 'better-read-more' ),
-				array( $this, 'metabox_normal_intro' ),
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
+				'default_module_settings', 
+				__( 'Default Module Settings', 'better-read-more' ),
+				array( $this, 'metabox_advanced_settings' ),
+				'settings_page_better-read-more"',
 				'normal',
 				'core'
 			);
 
-			//add metaboxes
-			add_meta_box( 
-				'default_module_settings', 
-				__( 'Default Module Settings', 'better-read-more' ),
-				array( $this, 'metabox_advanced_settings' ),
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
-				'advanced',
-				'core'
-			);
-
 		}
 
-		function define_settings() {
+		/**
+		 * Execute admin initializations
+		 * 
+		 * @return void
+		 */
+		function initialize_admin() {
 
 			add_settings_section(  
-				'general_settings_section',
-				__( 'Default Module Options', 'better-read-more' ),
-				array( $this, 'sandbox_general_options_callback' ),
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default'
+				'brm_settings',
+				__( 'Configure Better Read More', 'better-read-more' ),
+				array( $this, 'brm_general_options_callback' ),
+				'settings_page_better-read-more'
 			);
 
 			add_settings_field(   
-				'show_header', 
-				__( 'Header', 'better-read-more' ),
-				array( $this, 'sandbox_toggle_header_callback' ),
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
-				'general_settings_section',
-				array(
-					__( 'Activate this setting to display the header.', 'better-read-more' ),
-				)
-			);
-
-			add_settings_field(   
-				'show_footer', 
-				__( 'Footer', 'better-read-more' ),
-				array( $this, 'sandbox_toggle_footer_callback' ),
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
-				'general_settings_section',
-				array(
-					__( 'Activate this setting to display the footer.', 'better-read-more' ),
-				)
+				'brm[themes]', 
+				__( 'Themes', 'better-read-more' ),
+				array( $this, 'brm_select_theme_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings'
 			);
 
 			register_setting(  
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
-				'show_header'
-			);  
-
-			register_setting(  
-				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
-				'show_footer'
-			);  
+				'settings_page_better-read-more',
+				'brm',
+				array( $this, 'sanitize_brm_options' )
+			);
 
 
 		}
 
-		function sandbox_general_options_callback() {
-			echo '<p>Select which areas of content you wish to display.</p>';
-		}
+		/**
+		 * Settings section callback
+		 *
+		 * Can be used for an introductory setction or other output. Currently is used by both settings sections.
+		 * 
+		 * @return void
+		 */
+		function brm_general_settings_callback() {}
 
-		function sandbox_toggle_header_callback( $args ) {
+		/**
+		 * echos theme Field
+		 * 
+		 * @param  array $args field arguements
+		 * @return void
+		 */
+		function brm_select_theme_callback( $args ) {
 
-			$html = '<input type="checkbox" id="show_header" name="show_header" value="1" ' . checked( 1, get_option( 'show_header' ), false ) . '/>';   
-			$html .= '<label for="show_header"> '  . $args[0] . '</label>';   
+			$available_themes = wp_get_themes();
+			$selected_themes = $this->settings['themes'];
 
-			echo $html;
+			$html = '<select id="brm[themes]" name="brm[themes][]" multiple="multiple">';
 
-		}
+			foreach ( $available_themes as $theme ) {
+				
+				$theme_hash = md5( $theme['Name'] );
 
-		function sandbox_toggle_footer_callback( $args ) {
+				if ( in_array( $theme_hash, $selected_themes ) ) {
+					$selected = true;
+				} else {
+					$selected = false;
+				}
 
-			$html = '<input type="checkbox" id="show_footer" name="show_footer" value="1" ' . checked( 1, get_option( 'show_footer' ), false ) . '/>';   
-			$html .= '<label for="show_footer"> '  . $args[0] . '</label>';   
+				$html .= '<option value="' . $theme_hash . '" ' . selected( true, $selected, false ) . '/>' . $theme['Name'] . '</option>';
+
+			}
+
+			$html .= '</select>';
+			$html .= sprintf( '<em>%s</em>', __( 'Hold down the "ctrl" key on Windows or the "command" key on Mac to select multiple themes.', 'better-read-more' ) );
 
 			echo $html;
 
 		}
 
 		/**
-		 * Build and echo the content sidebar metabox
+		 * Render the settings metabox
 		 * 
 		 * @return void
 		 */
-		public function metabox_normal_intro() {
-
-			$content = '<p>This is a default module you can use as a base to figure out what you want to do elsewhere</p>';
-
-			echo $content;
-
-		}
-
 		public function metabox_advanced_settings() {
+
+			_e( 'Select which themes that you would like to use Better Read More on.', 'better-read-more' );
 
 			echo '<form name="' . get_current_screen()->id . '" method="post" action="options.php">';
 
-			$this->core->do_settings_sections( 'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default', false );
+			$this->core->do_settings_sections( 'settings_page_better-read-more', false );
 
 			echo '<p>' . PHP_EOL;
-			settings_fields( 'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default' );
+			settings_fields( 'settings_page_better-read-more' );
 			echo '<input class="button-primary" name="submit" type="submit" value="' . __( 'Save Changes', 'better-read-more' ) . '" />' . PHP_EOL;
 
 			echo '</p>' . PHP_EOL;
 
 			echo '</form>';
+
+		}
+
+		/**
+		 * Sanitize and validate input
+		 * 
+		 * @param  Array $input  array of input fields
+		 * @return Array         Sanitized array
+		 */
+		public function sanitize_brm_options( $input ) {
+
+			foreach ( $input['themes'] as $theme ) {
+
+				if ( preg_match( '/^[a-f0-9]{32}$/', $theme ) !== 0 && preg_match( '/^[a-f0-9]{32}$/', $theme ) !== false ) {
+					$output['themes'][] = $theme;
+				}
+
+			}
+
+			return $output;
 
 		}
 

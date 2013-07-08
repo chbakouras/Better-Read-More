@@ -31,3 +31,7 @@ div.inside ul li.sbicon {
 #icon-springbox {
     background: transparent url( '../../img/sb.png' ) no-repeat;
 }
+
+.form-table th {
+	font-weight: bold;
+}
