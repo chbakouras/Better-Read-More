@@ -5,9 +5,9 @@
  * @version 1.0
  */
 
-if ( ! class_exists( 'SB_Core' ) ) {
+if ( ! class_exists( 'BRM_Core' ) ) {
 
-	final class SB_Core {
+	final class BRM_Core {
 
 		private static $instance = null; //instantiated instance of this plugin
 
@@ -31,10 +31,10 @@ if ( ! class_exists( 'SB_Core' ) ) {
 			load_plugin_textdomain( $this->plugin->globals['plugin_hook'], false, dirname( plugin_basename( __FILE__ ) ) . '/languages' );
 
 			//require plugin setup information
-			require_once( $this->plugin->globals['plugin_dir'] . 'inc/class-sb-setup.php' );
-			register_activation_hook( $this->plugin->globals['plugin_file'], array( 'SB_Setup', 'on_activate' ) );
-			register_deactivation_hook( $this->plugin->globals['plugin_file'], array( 'SB_Setup', 'on_deactivate' ) );
-			register_uninstall_hook( $this->plugin->globals['plugin_file'], array( 'SB_Setup', 'on_uninstall' ) );
+			require_once( $this->plugin->globals['plugin_dir'] . 'inc/class-brm-setup.php' );
+			register_activation_hook( $this->plugin->globals['plugin_file'], array( 'BRM_Setup', 'on_activate' ) );
+			register_deactivation_hook( $this->plugin->globals['plugin_file'], array( 'BRM_Setup', 'on_deactivate' ) );
+			register_uninstall_hook( $this->plugin->globals['plugin_file'], array( 'BRM_Setup', 'on_uninstall' ) );
 
 			
 			//Determine if we need to run upgrade scripts
@@ -44,7 +44,7 @@ if ( ! class_exists( 'SB_Core' ) ) {
 
 				//see if the saved build version is older than the current build version
 				if ( isset( $plugin_data['build'] ) && $plugin_data['build'] !== $this->plugin->globals['plugin_build'] ) {
-					SB_Setup::upgrade_execute( $plugin_data['build'] ); //run upgrade scripts
+					BRM_Setup::upgrade_execute( $plugin_data['build'] ); //run upgrade scripts
 				}
 
 			}
@@ -109,14 +109,14 @@ if ( ! class_exists( 'SB_Core' ) ) {
 
 				//Set default dashboard title to "Dashboard"
 				if ( ! isset( $this->plugin->dashboard_page_name ) || $this->plugin->dashboard_page_name === '' ) {
-					$dashboard_page_name = __( 'Dashboard', '[insert text domain string]' );
+					$dashboard_page_name = __( 'Dashboard', 'better-read-more' );
 				} else {
 					$dashboard_page_name = $this->plugin->dashboard_page_name;
 				}
 
 				//Set default menu title to "Springbox"
 				if ( ! isset( $this->plugin->menu_name ) || $this->plugin->menu_name === '' ) {
-					$menu_name = __( 'Springbox', '[insert text domain string]' );
+					$menu_name = __( 'Springbox', 'better-read-more' );
 				} else {
 					$menu_name = $this->plugin->menu_name;
 				}
@@ -140,13 +140,13 @@ if ( ! class_exists( 'SB_Core' ) ) {
 				if ( $this->plugin->settings_page === true ) {
 
 					if ( ! isset( $this->plugin->settings_page_name ) || $this->plugin->settings_page_name === '' ) {
-						$settings_page_name = __( 'Settings', '[insert text domain string]' );
+						$settings_page_name = __( 'Settings', 'better-read-more' );
 					} else {
 						$settings_page_name = $this->plugin->settings_page_name;
 					}
 
 					if ( ! isset( $this->plugin->settings_menu_title ) || $this->plugin->settings_menu_title === '' ) {
-						$settings_menu_title = __( 'Settings', '[insert text domain string]' );
+						$settings_menu_title = __( 'Settings', 'better-read-more' );
 					} else {
 						$settings_menu_title = $this->plugin->settings_menu_title;
 					}
@@ -170,7 +170,7 @@ if ( ! class_exists( 'SB_Core' ) ) {
 				if ( isset( $this->plugin->dashboard_menu_title ) && $this->plugin->dashboard_menu_title !== '' ) {
 					$dashboard_menu = $this->plugin->dashboard_menu_title;
 				} else {
-					$dashboard_menu = __( 'Dashboard', '[insert text domain string]' );
+					$dashboard_menu = __( 'Dashboard', 'better-read-more' );
 				}
 
 				if ( isset( $submenu[ $this->plugin->globals['plugin_hook'] ] ) ) {
@@ -393,7 +393,7 @@ if ( ! class_exists( 'SB_Core' ) ) {
 		 * Start the global admin instance
 		 * 
 		 * @param  [plugin_class]  $plugin       Instance of main plugin class
-		 * @return SB_Core                       The instance of the SB_Core class
+		 * @return BRM_Core                      The instance of the BRM_Core class
 		 */
 		public static function start( $plugin ) {
 

@@ -1,20 +1,20 @@
 
-=== Springbox WordPress Plugin Framework ===
-Contributors: Springbox, ChrisWiegman
+=== Better Read More ===
+Contributors: Springbox, ChrisWiegman, iislam
 Donate link: http://springbox.com
-Tags: Springbox, plugin, framework
+Tags: Springbox, readmore, mobile, jQuery
 Requires at least: 3.6
 Tested up to: 3.6
 Stable tag: 0.0.1
 
-Plugin framework for Springbox WordPress Projects.
+Use WordPress built-in <!--more--> tag to shorten text on pages.
 
 == License == 
 Released under the terms of the GNU General Public License. 
 
 == Description ==
 
-Plugin framework for Springbox WordPress Projects.
+Use WordPress built-in <!--more--> tag to shorten text on pages.
 
 = Features =
 

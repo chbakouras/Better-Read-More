@@ -5,9 +5,9 @@
  * @version 1.0
  */
 
-if ( ! class_exists( 'Springbox') ) {
+if ( ! class_exists( 'BRM_Springbox') ) {
 
-	class Springbox {
+	class BRM_Springbox {
 
 		private static $instance = null;
 
@@ -37,7 +37,7 @@ if ( ! class_exists( 'Springbox') ) {
 				//add metaboxes
 				add_meta_box( 
 					'sb_publicize', 
-					__( 'Like this plugin? Spread the word', '[insert text domain string]' ),
+					__( 'Like this plugin? Spread the word', 'better-read-more' ),
 					array( $this, 'metabox_sidebar_publicize' ),
 					$page,
 					'side',
@@ -46,7 +46,7 @@ if ( ! class_exists( 'Springbox') ) {
 
 				add_meta_box( 
 					'sb_contact_info', 
-					__( 'Springbox on the Web', '[insert text domain string]' ),
+					__( 'Springbox on the Web', 'better-read-more' ),
 					array( $this, 'metabox_sidebar_contact' ),
 					$page,
 					'side',
@@ -55,7 +55,7 @@ if ( ! class_exists( 'Springbox') ) {
 
 				add_meta_box( 
 					'sb_plugin_support', 
-					__( 'Need help?', '[insert text domain string]' ),
+					__( 'Need help?', 'better-read-more' ),
 					array( $this, 'metabox_sidebar_support' ),
 					$page,
 					'side',
@@ -99,7 +99,7 @@ if ( ! class_exists( 'Springbox') ) {
 						global $plugopts;
 					
 					    echo '<div class="updated">' . PHP_EOL .
-							'<p>' . __( 'It looks like you\'ve been enjoying', '[insert text domain string]' ) . ' ' . $plugname . ' ' . __( 'for at least 30 days. Would you please consider telling your friends about it?', '[insert text domain string]' ) . '</p> <p><input type="button" class="button " value="' . __( 'Rate it 5★\'s', '[insert text domain string]' ) . '" onclick="document.location.href=\'?' . $plughook . '_lets_rate=yes&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';">  <input type="button" class="button " value="' . __( 'Tell Your Followers', '[insert text domain string]' ) . '" onclick="document.location.href=\'?' . $plughook . '_lets_tweet=yes&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';">  <input type="button" class="button " value="' . __( 'Don\'t Bug Me Again', '[insert text domain string]' ) . '" onclick="document.location.href=\'?' . $plughook . '_share_nag=off&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';"></p>' . PHP_EOL .
+							'<p>' . __( 'It looks like you\'ve been enjoying', 'better-read-more' ) . ' ' . $plugname . ' ' . __( 'for at least 30 days. Would you please consider telling your friends about it?', 'better-read-more' ) . '</p> <p><input type="button" class="button " value="' . __( 'Rate it 5★\'s', 'better-read-more' ) . '" onclick="document.location.href=\'?' . $plughook . '_lets_rate=yes&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';">  <input type="button" class="button " value="' . __( 'Tell Your Followers', 'better-read-more' ) . '" onclick="document.location.href=\'?' . $plughook . '_lets_tweet=yes&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';">  <input type="button" class="button " value="' . __( 'Don\'t Bug Me Again', 'better-read-more' ) . '" onclick="document.location.href=\'?' . $plughook . '_share_nag=off&_wpnonce=' .  wp_create_nonce( $plughook . '-reminder' ) . '\';"></p>' . PHP_EOL .
 					    	'</div>';
 				    
 					}
@@ -140,10 +140,10 @@ if ( ! class_exists( 'Springbox') ) {
 		public function metabox_sidebar_contact() {
 
 			$content = '<ul>';
-			$content .= '<li class="sbicon"><a href="http://www.springbox.com" target="_blank">' . __( 'Visit Springbox\'s homepage', '[insert text domain string]' ) . '</a></li>';
-			$content .= '<li class="facebook"><a href="https://www.facebook.com/Springbox" target="_blank">' . __( 'Like Springbox on Facebook', '[insert text domain string]' ) . '</a></li>';
-			$content .= '<li class="twitter"><a href="https://twitter.com/springbox" target="_blank">' . __( 'Follow Springbox on Twitter', '[insert text domain string]' ) . '</a></li>';
-			$content .= '<li class="linkedin"><a href="https://www.linkedin.com/company/springbox" target="_blank">' . __( 'Follow Springbox on LinkedIn', '[insert text domain string]' ) . '</a></li>';
+			$content .= '<li class="sbicon"><a href="http://www.springbox.com" target="_blank">' . __( 'Visit Springbox\'s homepage', 'better-read-more' ) . '</a></li>';
+			$content .= '<li class="facebook"><a href="https://www.facebook.com/Springbox" target="_blank">' . __( 'Like Springbox on Facebook', 'better-read-more' ) . '</a></li>';
+			$content .= '<li class="twitter"><a href="https://twitter.com/springbox" target="_blank">' . __( 'Follow Springbox on Twitter', 'better-read-more' ) . '</a></li>';
+			$content .= '<li class="linkedin"><a href="https://www.linkedin.com/company/springbox" target="_blank">' . __( 'Follow Springbox on LinkedIn', 'better-read-more' ) . '</a></li>';
 			$content .= '</ul>';
 
 			echo $content;
@@ -157,11 +157,11 @@ if ( ! class_exists( 'Springbox') ) {
 		 */
 		public function metabox_sidebar_publicize() {
 
-			$content = __( 'Have you found this plugin useful? Please take a minute to tell others about it.', '[insert text domain string]' );
+			$content = __( 'Have you found this plugin useful? Please take a minute to tell others about it.', 'better-read-more' );
 			$content .= '<ul>';
-			$content .= '<li><a href="' . $this->core->plugin->globals['plugin_homepage'] . '" target="_blank">' . __( 'Rate it 5★\'s on WordPress.org', '[insert text domain string]' ) . '</a></li>';
-			$content .= '<li>' . __( 'Talk about it on your site and link back to the ', '[insert text domain string]' ) . '<a href="' . $this->core->plugin->globals['plugin_homepage'] . '" target="_blank">' . __( 'plugin page.', '[insert text domain string]' ) . '</a></li>';
-			$content .= '<li><a href="http://twitter.com/home?status=' . urlencode( 'I use ' . $this->core->plugin->globals['plugin_name'] . ' for WordPress by @Springbox and you should too - ' . $this->core->plugin->globals['plugin_homepage'] ) . '" target="_blank">' . __( 'Tweet about it. ', '[insert text domain string]' ) . '</a></li>';
+			$content .= '<li><a href="' . $this->core->plugin->globals['plugin_homepage'] . '" target="_blank">' . __( 'Rate it 5★\'s on WordPress.org', 'better-read-more' ) . '</a></li>';
+			$content .= '<li>' . __( 'Talk about it on your site and link back to the ', 'better-read-more' ) . '<a href="' . $this->core->plugin->globals['plugin_homepage'] . '" target="_blank">' . __( 'plugin page.', 'better-read-more' ) . '</a></li>';
+			$content .= '<li><a href="http://twitter.com/home?status=' . urlencode( 'I use ' . $this->core->plugin->globals['plugin_name'] . ' for WordPress by @Springbox and you should too - ' . $this->core->plugin->globals['plugin_homepage'] ) . '" target="_blank">' . __( 'Tweet about it. ', 'better-read-more' ) . '</a></li>';
 			$content .= '</ul>';
 
 			echo $content;
@@ -175,7 +175,7 @@ if ( ! class_exists( 'Springbox') ) {
 		 */
 		public function metabox_sidebar_support() {
 
-			$content = __( 'If you need help getting this plugin working or have found a bug please visit the', '[insert text domain string]' ) . ' <a href="' . $this->core->plugin->globals['support_page'] . '" target="_blank">' . __( 'support forums', '[insert text domain string]' ) . '</a>.';
+			$content = __( 'If you need help getting this plugin working or have found a bug please visit the', 'better-read-more' ) . ' <a href="' . $this->core->plugin->globals['support_page'] . '" target="_blank">' . __( 'support forums', 'better-read-more' ) . '</a>.';
 
 			echo $content;
 
@@ -184,8 +184,8 @@ if ( ! class_exists( 'Springbox') ) {
 		/**
 		 * Start the Springbox module
 		 * 
-		 * @param  SB_Core    $core     Instance of core plugin class
-		 * @return Springbox 			The instance of the Springbox class
+		 * @param  BRM_Core    $core     	Instance of BRM_Core plugin class
+		 * @return BRM_Springbox 			The instance of the BRM_Springbox class
 		 */
 		public static function start( $core ) {
 

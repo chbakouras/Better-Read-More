@@ -1,21 +1,21 @@
 <?php
 
-if ( ! class_exists( 'Springbox_Setup' ) ) {
+if ( ! class_exists( 'BRM_Springbox_Setup' ) ) {
 
-	class Springbox_Setup {
+	class BRM_Springbox_Setup {
 
 		private 
 			$hook;
 
 		function __construct() {
-			global $sb_setup_action;
+			global $brm_setup_action;
 
 			//Important, this must be manually set in each module
-			$this->hook = 'springbox_wordpress_plugin_framework';
+			$this->hook = 'better-read-more';
 
-			if ( isset( $sb_setup_action ) ) {
+			if ( isset( $brm_setup_action ) ) {
 				
-				switch ( $sb_setup_action ) {
+				switch ( $brm_setup_action ) {
 
 					case 'activate':
 						$this->execute_activate();
@@ -44,8 +44,7 @@ if ( ! class_exists( 'Springbox_Setup' ) ) {
 		 * @return void
 		 */
 		function execute_activate() {
-			global $sb_hook;
-
+			
 		}
 
 		/**
@@ -54,8 +53,7 @@ if ( ! class_exists( 'Springbox_Setup' ) ) {
 		 * @return void
 		 */
 		function execute_deactivate() {
-			global $sb_hook;
-
+			
 		}
 
 		/**
@@ -64,8 +62,7 @@ if ( ! class_exists( 'Springbox_Setup' ) ) {
 		 * @return void
 		 */
 		function execute_uninstall() {
-			global $sb_hook;
-
+			
 			$this->execute_deactivate();
 
 		}
@@ -76,12 +73,11 @@ if ( ! class_exists( 'Springbox_Setup' ) ) {
 		 * @return void
 		 */
 		function execute_upgrade() {
-			global $sb_hook;
-
+			
 		}
 
 	}
 
 }
 
-new Springbox_Setup();
+new BRM_Springbox_Setup();

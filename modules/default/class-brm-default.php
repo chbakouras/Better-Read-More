@@ -1,8 +1,8 @@
 <?php
 
-if ( ! class_exists( 'Default_Module') ) {
+if ( ! class_exists( 'BRM_Default') ) {
 
-	class Default_Module {
+	class BRM_Default {
 
 		private static $instance = null;
 
@@ -23,8 +23,8 @@ if ( ! class_exists( 'Default_Module') ) {
 
 			$available_pages[] = add_submenu_page(
 				$this->core->plugin->globals['plugin_hook'],
-				__( 'Default Module', '[insert text domain string]' ),
-				__( 'Default', '[insert text domain string]' ),
+				__( 'Default Module', 'better-read-more' ),
+				__( 'Default', 'better-read-more' ),
 				$this->core->plugin->globals['plugin_access_lvl'],
 				$available_pages[0] . '-default',
 				array( $this->core, 'render_page' )
@@ -44,7 +44,7 @@ if ( ! class_exists( 'Default_Module') ) {
 			//add metaboxes
 			add_meta_box( 
 				'default_module_intro', 
-				__( 'Default Module Intro', '[insert text domain string]' ),
+				__( 'Default Module Intro', 'better-read-more' ),
 				array( $this, 'metabox_normal_intro' ),
 				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
 				'normal',
@@ -54,7 +54,7 @@ if ( ! class_exists( 'Default_Module') ) {
 			//add metaboxes
 			add_meta_box( 
 				'default_module_settings', 
-				__( 'Default Module Settings', '[insert text domain string]' ),
+				__( 'Default Module Settings', 'better-read-more' ),
 				array( $this, 'metabox_advanced_settings' ),
 				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
 				'advanced',
@@ -67,30 +67,30 @@ if ( ! class_exists( 'Default_Module') ) {
 
 			add_settings_section(  
 				'general_settings_section',
-				__( 'Default Module Options', '[insert text domain string]' ),
+				__( 'Default Module Options', 'better-read-more' ),
 				array( $this, 'sandbox_general_options_callback' ),
 				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default'
 			);
 
 			add_settings_field(   
 				'show_header', 
-				__( 'Header', '[insert text domain string]' ),
+				__( 'Header', 'better-read-more' ),
 				array( $this, 'sandbox_toggle_header_callback' ),
 				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
 				'general_settings_section',
 				array(
-					__( 'Activate this setting to display the header.', '[insert text domain string]' ),
+					__( 'Activate this setting to display the header.', 'better-read-more' ),
 				)
 			);
 
 			add_settings_field(   
 				'show_footer', 
-				__( 'Footer', '[insert text domain string]' ),
+				__( 'Footer', 'better-read-more' ),
 				array( $this, 'sandbox_toggle_footer_callback' ),
 				'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default',
 				'general_settings_section',
 				array(
-					__( 'Activate this setting to display the footer.', '[insert text domain string]' ),
+					__( 'Activate this setting to display the footer.', 'better-read-more' ),
 				)
 			);
 
@@ -150,7 +150,7 @@ if ( ! class_exists( 'Default_Module') ) {
 
 			echo '<p>' . PHP_EOL;
 			settings_fields( 'springbox_page_toplevel_page_springbox_wordpress_plugin_framework-default' );
-			echo '<input class="button-primary" name="submit" type="submit" value="' . __( 'Save Changes', '[insert text domain string]' ) . '" />' . PHP_EOL;
+			echo '<input class="button-primary" name="submit" type="submit" value="' . __( 'Save Changes', 'better-read-more' ) . '" />' . PHP_EOL;
 
 			echo '</p>' . PHP_EOL;
 
@@ -161,8 +161,8 @@ if ( ! class_exists( 'Default_Module') ) {
 		/**
 		 * Start the Springbox module
 		 * 
-		 * @param  SB_Core    $core     Instance of core plugin class
-		 * @return Springbox 			The instance of the Springbox class
+		 * @param  BRM_Core    $core     Instance of core plugin class
+		 * @return BRM_Default 			The instance of the BRM_Default class
 		 */
 		public static function start( $core ) {
 

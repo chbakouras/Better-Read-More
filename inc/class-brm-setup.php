@@ -5,9 +5,9 @@
  * @version 1.0
  */
 
-if ( ! class_exists( 'SB_Setup' ) ) {
+if ( ! class_exists( 'BRM_Setup' ) ) {
 
-	class SB_Setup {
+	class BRM_Setup {
 
 		private
 			$hook,
@@ -24,7 +24,7 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		function __construct( $case = false, $upgrading = false ) {
 
 			//Important, this must be manually set in each plugin
-			$this->hook = 'springbox_wordpress_plugin_framework';
+			$this->hook = 'better-read-more';
 	
 			if ( ! $case ) {
 				die( 'error' );
@@ -77,8 +77,8 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 **/
 		function on_activate() {
 			
-			define( 'SB_NEW_INSTALL', true );
-			new SB_Setup( 'activate' );
+			define( 'BRM_NEW_INSTALL', true );
+			new BRM_Setup( 'activate' );
 			
 		}
 
@@ -96,7 +96,7 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 				$case = 'deactivate';
 			}
 
-			new SB_Setup( $case );
+			new BRM_Setup( $case );
 		}
 
 		/**
@@ -105,7 +105,7 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 **/
 		function on_uninstall() {
 		
-			new SB_Setup( 'uninstall' );
+			new BRM_Setup( 'uninstall' );
 			
 		}
 		
@@ -116,9 +116,9 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 * @return void
 		 */
 		function activate_execute( $updating = false ) {
-			global $sb_setup_action;
+			global $brm_setup_action;
 
-			$sb_setup_action = 'activate';
+			$brm_setup_action = 'activate';
 
 			$this->do_modules();
 
@@ -133,9 +133,9 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 * @return void
 		 */
 		function upgrade_execute( $oldversion = '' ) {
-			global $sb_setup_action;
+			global $brm_setup_action;
 
-			$sb_setup_action = 'upgrade';
+			$brm_setup_action = 'upgrade';
 
 			$this->do_modules();
 			
@@ -146,9 +146,9 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 *
 		 **/
 		function deactivate_execute( $updating = false ) {
-			global $sb_setup_action;
+			global $brm_setup_action;
 
-			$sb_setup_action = 'deactivate';
+			$brm_setup_action = 'deactivate';
 
 			$this->do_modules();
 			
@@ -159,9 +159,9 @@ if ( ! class_exists( 'SB_Setup' ) ) {
 		 *
 		 **/
 		function uninstall_execute() {
-			global $sb_setup_action;
+			global $brm_setup_action;
 
-			$sb_setup_action = 'uninstall';
+			$brm_setup_action = 'uninstall';
 
 			$this->do_modules();
 
