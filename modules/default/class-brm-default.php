@@ -37,11 +37,15 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 				wp_register_script(
 					'brm', 
-					$this->core->plugin->globals['plugin_url'] . "modules/default/js/brm.js",
+					$this->core->plugin->globals['plugin_url'] . "/modules/default/js/brm.js",
 					array( 'jquery' )
 				);
 
 				wp_enqueue_script( 'brm' );
+
+				wp_register_style( 'brm_styles', $this->core->plugin->globals['plugin_url'] . '/modules/default/css/brm.css' );
+
+				wp_enqueue_style( 'brm_styles' );
 
 			}
 
