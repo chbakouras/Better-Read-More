@@ -23,14 +23,18 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			if ( in_array( md5( $current_theme['Name'] ), $this->settings['themes'] ) ) {
 
-				add_action( 'wp_enqueue_scripts', array( $this, add_scripts ) );
-
-				add_filter( 'the_content', array( $this, read_more ) );
+				add_action( 'wp_enqueue_scripts', array( $this, add_scripts ) ); //Add front-end CSS and Javascript
+				add_filter( 'the_content', array( $this, read_more ) ); //Filter the more tag
 
 			}
 
 		}
 
+		/**
+		 * Adds frontend CSS and JavaScript
+		 *
+		 * @return  void
+		 */
 		public function add_scripts() {
 
 			if ( is_singular() ) {
@@ -51,6 +55,12 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 		}
 
+		/**
+		 * Filters more tag to allow for expanded content
+		 * 
+		 * @param  string $content The content
+		 * @return string          The content
+		 */
 		public function read_more( $content ) {
 
 			global $post;
