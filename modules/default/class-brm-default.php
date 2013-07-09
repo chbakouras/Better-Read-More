@@ -19,6 +19,62 @@ if ( ! class_exists( 'BRM_Default') ) {
 			add_filter( $this->core->plugin->globals['plugin_hook'] . '_add_admin_sub_pages', array( $this, 'add_sub_page' ) );
 			add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 
+			$current_theme = wp_get_theme();		
+
+			if ( in_array( md5( $current_theme['Name'] ), $this->settings['themes'] ) ) {
+
+				add_action( 'wp_enqueue_scripts', array( $this, add_scripts ) );
+
+				add_filter( 'the_content', array( $this, read_more ) );
+
+			}
+
+		}
+
+		public function add_scripts() {
+
+			if ( is_singular() ) {
+
+				wp_register_script(
+					'brm', 
+					$this->core->plugin->globals['plugin_url'] . "modules/default/js/brm.js",
+					array( 'jquery' )
+				);
+
+				wp_enqueue_script( 'brm' );
+
+			}
+
+		}
+
+		public function read_more( $content ) {
+
+			global $post;
+
+			if ( is_singular() ) {
+				
+				if ( strpos( $content, '<!--more-->' ) ) {
+
+					$content_parts = explode( '<!--more-->', $content );
+
+				} else {
+
+					$content_parts = explode( '<span id="more-' . $post->ID . '"></span>', $content );
+
+				}		
+
+				$html = $content_parts[0];
+
+				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="more-link">more</a>	';
+
+			} else {
+
+				$html = $content;
+
+			}
+
+			return $html;
+
 		}
 
 		/**
@@ -26,7 +82,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * 
 		 * @param array $available_pages array of BWPS settings pages
 		 */
-		function add_sub_page( $available_pages ) {
+		public function add_sub_page( $available_pages ) {
 
 			$available_pages[] = add_submenu_page(
 				$this->core->plugin->globals['plugin_hook'],
@@ -46,7 +102,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * 
 		 * @param array $available_pages array of available page_hooks
 		 */
-		function add_admin_meta_boxes( $available_pages ) {
+		public function add_admin_meta_boxes( $available_pages ) {
 
 			//add metaboxes
 			add_meta_box( 
@@ -65,7 +121,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * 
 		 * @return void
 		 */
-		function initialize_admin() {
+		public function initialize_admin() {
 
 			add_settings_section(  
 				'brm_settings',
@@ -98,7 +154,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * 
 		 * @return void
 		 */
-		function brm_general_settings_callback() {}
+		public function brm_general_settings_callback() {}
 
 		/**
 		 * echos theme Field
@@ -106,7 +162,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * @param  array $args field arguements
 		 * @return void
 		 */
-		function brm_select_theme_callback( $args ) {
+		public function brm_select_theme_callback( $args ) {
 
 			$available_themes = wp_get_themes();
 			$selected_themes = $this->settings['themes'];
