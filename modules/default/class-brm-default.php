@@ -18,6 +18,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 			add_action( $this->core->plugin->globals['plugin_hook'] . '_add_admin_meta_boxes', array( $this, 'add_admin_meta_boxes' ) );
 			add_filter( $this->core->plugin->globals['plugin_hook'] . '_add_admin_sub_pages', array( $this, 'add_sub_page' ) );
 			add_action( 'admin_init', array( $this, 'initialize_admin' ) );
+			add_action( 'admin_enqueue_scripts', array( $this, 'admin_script' ) );
 
 			$current_theme = wp_get_theme();		
 
@@ -47,10 +48,32 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 				wp_enqueue_script( 'brm' );
 
-				wp_register_style( 'brm_styles', $this->core->plugin->globals['plugin_url'] . '/modules/default/css/brm.css' );
+				if ( isset( $this->settings['use_css'] ) && $this->settings['use_css'] == 1 ) {
 
-				wp_enqueue_style( 'brm_styles' );
+					$css = isset( $this->settings['custom_css'] ) ? esc_textarea( $this->settings['custom_css'] ) : '';
+					wp_add_inline_style( 'brm_styles', $css );
 
+				} else {
+
+					wp_register_style( 'brm_styles', $this->core->plugin->globals['plugin_url'] . 'modules/default/css/brm.css' );
+					wp_enqueue_style( 'brm_styles' );
+
+				}
+
+			}
+
+		}
+
+		/**
+		 * Add Away mode Javascript
+		 * 
+		 * @return void
+		 */
+		public function admin_script() {
+
+			if ( strpos( get_current_screen()->id,'settings_page_better-read-more' ) !== false ) {
+				
+				wp_enqueue_script( 'brm_admin', $this->core->plugin->globals['plugin_url'] . 'modules/default/js/brm-admin.js', 'jquery', $this->core->plugin->globals['plugin_build'] );
 			}
 
 		}
@@ -79,7 +102,9 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 				$html = $content_parts[0];
 
-				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="more-link">more</a>	';
+				$more_text = ( isset( $this->settings['more_text'] ) ? sanitize_text_field( $this->settings['more_text'] ) : '(more)' );
+
+				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="more-link">' . $more_text . '</a>';
 
 			} else {
 
@@ -137,19 +162,56 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 */
 		public function initialize_admin() {
 
+			//add primary settings section
 			add_settings_section(  
-				'brm_settings',
+				'brm_settings_1',
 				__( 'Configure Better Read More', 'better-read-more' ),
 				array( $this, 'brm_general_options_callback' ),
 				'settings_page_better-read-more'
 			);
 
+			//add custom css settings section
+			add_settings_section(  
+				'brm_settings_2',
+				__( 'Configure Better Read More', 'better-read-more' ),
+				array( $this, 'brm_general_options_callback' ),
+				'settings_page_better-read-more'
+			);
+
+			//add themes field
 			add_settings_field(   
 				'brm[themes]', 
 				__( 'Themes', 'better-read-more' ),
 				array( $this, 'brm_select_theme_callback' ),
 				'settings_page_better-read-more',
-				'brm_settings'
+				'brm_settings_1'
+			);
+
+			//add more field
+			add_settings_field(   
+				'brm[more_text]', 
+				__( 'More Text', 'better-read-more' ),
+				array( $this, 'brm_more_text_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings_1'
+			);
+
+			//add use custom css field
+			add_settings_field(   
+				'brm[use_css]', 
+				__( 'Use CSS', 'better-read-more' ),
+				array( $this, 'brm_use_css_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings_1'
+			);
+
+			//add custom css entry field
+			add_settings_field(   
+				'brm[custom_css]', 
+				__( 'Custom CSS', 'better-read-more' ),
+				array( $this, 'brm_custom_css_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings_2'
 			);
 
 			register_setting(  
@@ -181,7 +243,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 			$available_themes = wp_get_themes();
 			$selected_themes = $this->settings['themes'];
 
-			$html = '<select id="brm[themes]" name="brm[themes][]" multiple="multiple">';
+			$html = '<select id="brm_themes" name="brm[themes][]" multiple="multiple">';
 
 			foreach ( $available_themes as $theme ) {
 				
@@ -205,6 +267,54 @@ if ( ! class_exists( 'BRM_Default') ) {
 		}
 
 		/**
+		 * echos more text Field
+		 * 
+		 * @param  array $args field arguements
+		 * @return void
+		 */
+		public function brm_more_text_callback( $args ) {
+
+			$text = ( isset( $this->settings['more_text'] )? $this->settings['more_text'] : '(more)' );
+			
+			$html = '<input type="text" name="brm[more_text] id="brm_more_text value="' . $text . '" /><br />';
+
+			$html .= sprintf( '<em>%s</em>', __( 'This is the text that will display for the more link.', 'better-read-more' ) );
+
+			echo $html;
+
+		}
+
+		/**
+		 * echos default css Field
+		 * 
+		 * @param  array $args field arguements
+		 * @return void
+		 */
+		public function brm_use_css_callback( $args ) {
+
+			$html = '<input type="checkbox" id="brm_use_css" name="brm[use_css]" value="1" ' . checked( 1, $this->settings['use_css'], false ) . '/><br />';  
+			$html .= sprintf( '<em>%s</em>', __( 'Check this box to enter custom CSS to style the more button.', 'better-read-more' ) );
+
+			echo $html;
+
+		}
+
+		/**
+		 * echos custom css Field
+		 * 
+		 * @param  array $args field arguements
+		 * @return void
+		 */
+		public function brm_custom_css_callback( $args ) {
+
+			$html = '<textarea name="brm[custom_css]" id="brm_custom_css" style="width: 100%;" rows="10"></textarea><br />';
+			$html .= sprintf( '<em>%s</em>', __( 'Hold down the "ctrl" key on Windows or the "command" key on Mac to select multiple themes.', 'better-read-more' ) );
+
+			echo $html;
+
+		}
+
+		/**
 		 * Render the settings metabox
 		 * 
 		 * @return void
@@ -213,12 +323,14 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			_e( 'Select which themes that you would like to use Better Read More on.', 'better-read-more' );
 
-			echo '<form name="' . get_current_screen()->id . '" method="post" action="options.php">';
+			printf( '<form name="%s" method="post" action="options.php">', get_current_screen()->id );
 
 			$this->core->do_settings_sections( 'settings_page_better-read-more', false );
 
 			echo '<p>' . PHP_EOL;
+
 			settings_fields( 'settings_page_better-read-more' );
+
 			echo '<input class="button-primary" name="submit" type="submit" value="' . __( 'Save Changes', 'better-read-more' ) . '" />' . PHP_EOL;
 
 			echo '</p>' . PHP_EOL;
@@ -242,6 +354,14 @@ if ( ! class_exists( 'BRM_Default') ) {
 				}
 
 			}
+
+			if ( isset( $input['more_text'] ) ) {
+				$output['more_text'] = sanitize_text_field( $input['more_text'] );
+			}
+
+			$output['use_css'] = ( isset( $input['use_css'] ) && $input['use_css'] == 1 ) ? 1 : 0;
+
+			$output['custom_css'] = isset( $input['custom_css' ] ) ? esc_textarea( $input['custom_css' ] ) : '';
 
 			return $output;
 
