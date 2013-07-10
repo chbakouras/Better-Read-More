@@ -307,7 +307,38 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 */
 		public function brm_custom_css_callback( $args ) {
 
-			$html = '<textarea name="brm[custom_css]" id="brm_custom_css" style="width: 100%;" rows="10"></textarea><br />';
+			//if we have save css, use it
+			if ( isset( $this->settings['custom_css'] ) ) {
+
+				$css = esc_textarea( $this->settings['custom_css'] );
+
+			} else { //load the default css from the plugin file
+
+				$url = wp_nonce_url( 'options.php?page=brm', 'better-read-more' );
+
+				if ( false === ( $creds = request_filesystem_credentials( $url, $method, false, false, $form_fields ) ) ) {
+					return true; // stop the normal page form from displaying
+				}
+
+				if ( ! WP_Filesystem( $creds ) ) {
+
+	    			// our credentials were no good, ask the user for them again
+	    			request_filesystem_credentials( $url, $method, true, false, $form_fields );
+	    			return true;
+
+				}
+
+				global $wp_filesystem;
+
+				if ( $wp_filesystem->exists( $this->core->plugin->globals['plugin_dir'] . 'modules/default/css/brm.css' ) ) { //check for existence
+
+					$css = $wp_filesystem->get_contents( $this->core->plugin->globals['plugin_dir'] . 'modules/default/css/brm.css' );
+
+				}
+
+			}
+
+			$html = '<textarea name="brm[custom_css]" id="brm_custom_css" style="width: 100%;" rows="10">' . $css . '</textarea><br />';
 			$html .= sprintf( '<em>%s</em>', __( 'Hold down the "ctrl" key on Windows or the "command" key on Mac to select multiple themes.', 'better-read-more' ) );
 
 			echo $html;
