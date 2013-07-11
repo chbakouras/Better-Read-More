@@ -104,7 +104,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 				$more_text = ( isset( $this->settings['more_text'] ) ? sanitize_text_field( $this->settings['more_text'] ) : '(more)' );
 
-				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="more-link">' . $more_text . '</a>';
+				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="brm-more-link">' . $more_text . '</a>';
 
 			} else {
 
