@@ -88,23 +88,33 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			global $post;
 
+			$continue = false;
+
 			if ( is_singular() ) {
 				
 				if ( strpos( $content, '<!--more-->' ) ) {
 
 					$content_parts = explode( '<!--more-->', $content );
+					$continue = true;
 
-				} else {
+				} elseif ( strpos( $content, '<span id="more-' . $post->ID . '"></span>' ) ) {
 
 					$content_parts = explode( '<span id="more-' . $post->ID . '"></span>', $content );
+					$continue = true;
 
-				}		
+				}	
 
-				$html = $content_parts[0];
+				if ( $continue === true ) {	
 
-				$more_text = ( isset( $this->settings['more_text'] ) ? sanitize_text_field( $this->settings['more_text'] ) : '(more)' );
+					$html = $content_parts[0];
 
-				$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="brm-more-link">' . $more_text . '</a>';
+					$more_text = ( isset( $this->settings['more_text'] ) ? sanitize_text_field( $this->settings['more_text'] ) : '(more)' );
+
+					$html .='</p><div class="brm">' . $content_parts[1] . '</div><a href="#" class="brm-more-link">' . $more_text . '</a>';
+
+				} else {
+					$html = $content;
+				}
 
 			} else {
 
