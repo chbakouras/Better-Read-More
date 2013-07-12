@@ -1,11 +1,10 @@
 
 === Better Read More ===
 Contributors: Springbox, ChrisWiegman, iislam
-Donate link: http://springbox.com
 Tags: Springbox, readmore, mobile, jQuery
-Requires at least: 3.6
+Requires at least: 3.5
 Tested up to: 3.6
-Stable tag: 0.0.1
+Stable tag: 1.0
 
 Use WordPress built-in <!--more--> tag to hide text on pages.
 
@@ -26,9 +25,8 @@ Can be used with any theme, including sites that use multiple themes for mobile/
 2. Unzip
 3. Activate the plugin through the 'Plugins' menu in WordPress
 4. Select the theme and other options under Settings->Better Read More
-5. Customize the widget on the 'Widgets' page.
 
 == Changelog ==
 
-= 0.0.1 =
+= 1.0 =
 * Initial release

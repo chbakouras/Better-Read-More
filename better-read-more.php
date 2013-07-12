@@ -3,7 +3,7 @@
 	Plugin Name: Better Read More
 	Plugin URI: http://springbox.com
 	Description: Use WordPress built-in <!--more--> tag to shorten text on pages.
-	Version: 0.0.1
+	Version: 1.0
 	Text Domain: better-read-more
 	Domain Path: /languages
 	Author: Springbox
@@ -47,12 +47,12 @@ if ( ! class_exists( 'SB_Better_Read_More' ) ) {
 				'plugin_file'			=> __FILE__, //the main plugin file
 				'plugin_access_lvl' 	=> 'manage_options', //Access level required to access plugin options
 				'plugin_dir' 			=> plugin_dir_path( __FILE__ ), //the path of the plugin directory
-				'plugin_homepage' 		=> 'http://www.wordpress.org', //The plugins homepage on WordPress.org
+				'plugin_homepage' 		=> 'http://wordpress.org/plugins/better-read-more/', //The plugins homepage on WordPress.org
 				'plugin_hook'			=> 'better-read-more', //the hook for text calls and other areas
 				'plugin_name' 			=> __( 'Better Read More', 'better-read-more' ), //the name of the plugin
 				'plugin_url' 			=> plugin_dir_url( __FILE__ ), //the URL of the plugin directory
-				'support_page' 			=> 'http://wordpress.org/', //address of the WordPress support forums for the plugin
-				'wordpress_page'		=> 'http://wordpress.org/', //plugin's page in the WordPress.org Repos
+				'support_page' 			=> 'http://wordpress.org/support/plugin/better-read-more', //address of the WordPress support forums for the plugin
+				'wordpress_page'		=> 'http://wordpress.org/plugins/better-read-more/', //plugin's page in the WordPress.org Repos
 			);
 
 			$this->top_level_menu = false; //true if top level menu, else false
