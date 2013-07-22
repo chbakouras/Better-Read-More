@@ -4,11 +4,11 @@ jQuery( document ).ready( function () {
 
 		if ( jQuery( "#brm_use_css" ).is( ':checked' ) ) {
 
-			jQuery( "#brm_custom_css" ).show();
+			jQuery( "#brm_settings_2" ).show();
 
 		} else {
 
-			jQuery( "#brm_custom_css" ).hide();
+			jQuery( "#brm_settings_2" ).hide();
 
 		}
 

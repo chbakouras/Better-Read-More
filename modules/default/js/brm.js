@@ -6,6 +6,12 @@ jQuery( 'document' ).ready( function() {
 
 		jQuery( '.brm' ).toggle();
 
+		if ( jQuery( this ).text() == brm_text.more ) {
+			jQuery( this ).text( brm_text.less );
+		} else {
+			jQuery( this ).text( brm_text.more );
+		}
+
 	} );
 
 } );

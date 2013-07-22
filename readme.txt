@@ -4,7 +4,7 @@ Contributors: Springbox, ChrisWiegman, iislam
 Tags: Springbox, readmore, mobile, jQuery
 Requires at least: 3.5
 Tested up to: 3.6
-Stable tag: 1.0
+Stable tag: 1.1
 
 Use WordPress built-in <!--more--> tag to hide text on pages.
 
@@ -27,6 +27,10 @@ Can be used with any theme, including sites that use multiple themes for mobile/
 4. Select the theme and other options under Settings->Better Read More
 
 == Changelog ==
+
+= 1.1 =
+* Added less button for better usability when text is expanded
+* Minor bugfixes and tweaks
 
 = 1.0 =
 * Initial release

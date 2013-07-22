@@ -48,6 +48,13 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 				wp_enqueue_script( 'brm' );
 
+				$labels = array(
+					'more' => ( isset( $this->settings['more_text'] ) && $this->settings['more_text'] == 1 ? $this->settings['more_text'] : '(more)' ),
+					'less' => ( isset( $this->settings['less_text'] ) && $this->settings['less_text'] == 1 ? $this->settings['less_text'] : '(less)' ),
+				);
+
+				wp_localize_script( 'brm', 'brm_text', $labels );
+
 				if ( isset( $this->settings['use_css'] ) && $this->settings['use_css'] == 1 ) {
 
 					$css = isset( $this->settings['custom_css'] ) ? esc_textarea( $this->settings['custom_css'] ) : '';
@@ -198,10 +205,19 @@ if ( ! class_exists( 'BRM_Default') ) {
 			);
 
 			//add more field
-			add_settings_field(   
-				'brm[more_text]', 
+			add_settings_field(
+				'brm[more_text]',
 				__( 'More Text', 'better-read-more' ),
 				array( $this, 'brm_more_text_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings_1'
+			);
+
+			//add less field
+			add_settings_field(
+				'brm[less_text]',
+				__( 'Less Text', 'better-read-more' ),
+				array( $this, 'brm_less_text_callback' ),
 				'settings_page_better-read-more',
 				'brm_settings_1'
 			);
@@ -279,7 +295,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		/**
 		 * echos more text Field
 		 * 
-		 * @param  array $args field arguements
+		 * @param  array $args field arguments
 		 * @return void
 		 */
 		public function brm_more_text_callback( $args ) {
@@ -295,9 +311,27 @@ if ( ! class_exists( 'BRM_Default') ) {
 		}
 
 		/**
+		 * echos less text Field
+		 *
+		 * @param  array $args field arguments
+		 * @return void
+		 */
+		public function brm_less_text_callback( $args ) {
+
+			$text = ( isset( $this->settings['less_text'] )? $this->settings['less_text'] : '(less)' );
+
+			$html = '<input type="text" name="brm[less_text] id="brm_less_text value="' . $text . '" /><br />';
+
+			$html .= sprintf( '<em>%s</em>', __( 'This is the text that will display for the less link.', 'better-read-more' ) );
+
+			echo $html;
+
+		}
+
+		/**
 		 * echos default css Field
 		 * 
-		 * @param  array $args field arguements
+		 * @param  array $args field arguments
 		 * @return void
 		 */
 		public function brm_use_css_callback( $args ) {
@@ -349,7 +383,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 			}
 
 			$html = '<textarea name="brm[custom_css]" id="brm_custom_css" style="width: 100%;" rows="10">' . $css . '</textarea><br />';
-			$html .= sprintf( '<em>%s</em>', __( 'Hold down the "ctrl" key on Windows or the "command" key on Mac to select multiple themes.', 'better-read-more' ) );
+			$html .= sprintf( '<em>%s</em>', __( 'Enter your custom css here.', 'better-read-more' ) );
 
 			echo $html;
 
@@ -398,6 +432,10 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			if ( isset( $input['more_text'] ) ) {
 				$output['more_text'] = sanitize_text_field( $input['more_text'] );
+			}
+
+			if ( isset( $input['less_text'] ) ) {
+				$output['less_text'] = sanitize_text_field( $input['less_text'] );
 			}
 
 			$output['use_css'] = ( isset( $input['use_css'] ) && $input['use_css'] == 1 ) ? 1 : 0;

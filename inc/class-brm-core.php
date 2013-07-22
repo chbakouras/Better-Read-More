@@ -382,12 +382,13 @@ if ( ! class_exists( 'BRM_Core' ) ) {
 
 				if ( ! isset( $wp_settings_fields ) || !isset( $wp_settings_fields[$page] ) || !isset( $wp_settings_fields[$page][$section['id']] ) )
 					continue;
-				
+
 				echo '<table class="form-table" id="' . $section['id'] . '">';
 				do_settings_fields( $page, $section['id'] );
 				echo '</table>';
+
 			}
-			
+
 		}
 
 		/**
