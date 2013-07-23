@@ -28,6 +28,9 @@ Can be used with any theme, including sites that use multiple themes for mobile/
 
 == Changelog ==
 
+= Dev =
+* Fixed error message when settings are not yet saved
+
 = 1.1 =
 * Added less button for better usability when text is expanded
 * Minor bugfixes and tweaks

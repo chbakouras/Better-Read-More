@@ -3,7 +3,7 @@
 	Plugin Name: Better Read More
 	Plugin URI: http://springbox.com
 	Description: Use WordPress built-in <!--more--> tag to shorten text on pages.
-	Version: 1.1
+	Version: Dev
 	Text Domain: better-read-more
 	Domain Path: /languages
 	Author: Springbox
