@@ -28,7 +28,7 @@ Can be used with any theme, including sites that use multiple themes for mobile/
 
 == Changelog ==
 
-= Dev =
+= 1.2 =
 * Fixed error message when settings are not yet saved
 * Added ability to hide less button
 * Various bugfixes
