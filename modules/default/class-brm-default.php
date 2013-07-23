@@ -24,8 +24,8 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			if ( isset( $this->settings['themes'] ) && in_array( md5( $current_theme['Name'] ), $this->settings['themes'] ) ) {
 
-				add_action( 'wp_enqueue_scripts', array( $this, add_scripts ) ); //Add front-end CSS and Javascript
-				add_filter( 'the_content', array( $this, read_more ) ); //Filter the more tag
+				add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) ); //Add front-end CSS and Javascript
+				add_filter( 'the_content', array( $this, 'read_more' ) ); //Filter the more tag
 
 			}
 
@@ -40,11 +40,23 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			if ( is_singular() ) {
 
-				wp_register_script(
-					'brm', 
-					$this->core->plugin->globals['plugin_url'] . "/modules/default/js/brm.js",
-					array( 'jquery' )
-				);
+				if ( isset ( $this->settings['show_less'] ) && $this->settings['show_less'] == 1 ) {
+
+					wp_register_script(
+						'brm',
+						$this->core->plugin->globals['plugin_url'] . "/modules/default/js/brm-less.js",
+						array( 'jquery' )
+					);
+
+				} else {
+
+					wp_register_script(
+						'brm',
+						$this->core->plugin->globals['plugin_url'] . "/modules/default/js/brm-noless.js",
+						array( 'jquery' )
+					);
+
+				}
 
 				wp_enqueue_script( 'brm' );
 
