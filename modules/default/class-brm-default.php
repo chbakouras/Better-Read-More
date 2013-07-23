@@ -369,7 +369,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 */
 		public function brm_show_less_callback( $args ) {
 
-			$html = '<input type="checkbox" id="show_less" name="brm[show_less]" value="1" ' . checked( 1, $this->settings['show_less'], false ) . '/><br />';
+			$html = '<input type="checkbox" id="brm_show_less" name="brm[show_less]" value="1" ' . checked( 1, $this->settings['show_less'], false ) . '/><br />';
 			$html .= sprintf( '<em>%s</em>', __( 'Check this box to show a "less" button allowing the user to collapse opened text.', 'better-read-more' ) );
 
 			echo $html;
