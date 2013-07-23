@@ -485,6 +485,8 @@ if ( ! class_exists( 'BRM_Default') ) {
 				$output['more_text'] = sanitize_text_field( $input['more_text'] );
 			}
 
+			$output['show_less'] = ( isset( $input['show_less'] ) && $input['show_less'] == 1 ) ? 1 : 0;
+
 			if ( isset( $input['less_text'] ) ) {
 				$output['less_text'] = sanitize_text_field( $input['less_text'] );
 			}
