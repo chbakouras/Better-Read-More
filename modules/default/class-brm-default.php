@@ -195,6 +195,30 @@ if ( ! class_exists( 'BRM_Default') ) {
 				'settings_page_better-read-more'
 			);
 
+			//add less button text settings section
+			add_settings_section(
+				'brm_settings_3',
+				__( 'Configure Better Read More', 'better-read-more' ),
+				array( $this, 'brm_general_options_callback' ),
+				'settings_page_better-read-more'
+			);
+
+			//add less button text settings section
+			add_settings_section(
+				'brm_settings_4',
+				__( 'Configure Better Read More', 'better-read-more' ),
+				array( $this, 'brm_general_options_callback' ),
+				'settings_page_better-read-more'
+			);
+
+			//add less button text settings section
+			add_settings_section(
+				'brm_settings_5',
+				__( 'Configure Better Read More', 'better-read-more' ),
+				array( $this, 'brm_general_options_callback' ),
+				'settings_page_better-read-more'
+			);
+
 			//add themes field
 			add_settings_field(   
 				'brm[themes]', 
@@ -215,11 +239,20 @@ if ( ! class_exists( 'BRM_Default') ) {
 
 			//add less field
 			add_settings_field(
+				'brm[show_less]',
+				__( 'Show Less Button', 'better-read-more' ),
+				array( $this, 'brm_show_less_callback' ),
+				'settings_page_better-read-more',
+				'brm_settings_2'
+			);
+
+			//add less field
+			add_settings_field(
 				'brm[less_text]',
 				__( 'Less Text', 'better-read-more' ),
 				array( $this, 'brm_less_text_callback' ),
 				'settings_page_better-read-more',
-				'brm_settings_1'
+				'brm_settings_3'
 			);
 
 			//add use custom css field
@@ -228,7 +261,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 				__( 'Use CSS', 'better-read-more' ),
 				array( $this, 'brm_use_css_callback' ),
 				'settings_page_better-read-more',
-				'brm_settings_1'
+				'brm_settings_4'
 			);
 
 			//add custom css entry field
@@ -237,7 +270,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 				__( 'Custom CSS', 'better-read-more' ),
 				array( $this, 'brm_custom_css_callback' ),
 				'settings_page_better-read-more',
-				'brm_settings_2'
+				'brm_settings_5'
 			);
 
 			register_setting(  
@@ -256,7 +289,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 		 * 
 		 * @return void
 		 */
-		public function brm_general_settings_callback() {}
+		public function brm_general_options_callback() {}
 
 		/**
 		 * echos theme Field
@@ -275,7 +308,7 @@ if ( ! class_exists( 'BRM_Default') ) {
 				
 				$theme_hash = md5( $theme['Name'] );
 
-				if ( in_array( $theme_hash, $selected_themes ) ) {
+				if ( isset( $selected_themes ) && is_array( $selected_themes ) && in_array( $theme_hash, $selected_themes ) ) {
 					$selected = true;
 				} else {
 					$selected = false;
@@ -329,6 +362,21 @@ if ( ! class_exists( 'BRM_Default') ) {
 		}
 
 		/**
+		 * echos show less button Field
+		 *
+		 * @param  array $args field arguments
+		 * @return void
+		 */
+		public function brm_show_less_callback( $args ) {
+
+			$html = '<input type="checkbox" id="show_less" name="brm[show_less]" value="1" ' . checked( 1, $this->settings['show_less'], false ) . '/><br />';
+			$html .= sprintf( '<em>%s</em>', __( 'Check this box to show a "less" button allowing the user to collapse opened text.', 'better-read-more' ) );
+
+			echo $html;
+
+		}
+
+		/**
 		 * echos default css Field
 		 * 
 		 * @param  array $args field arguments
@@ -359,6 +407,9 @@ if ( ! class_exists( 'BRM_Default') ) {
 			} else { //load the default css from the plugin file
 
 				$url = wp_nonce_url( 'options.php?page=brm', 'better-read-more' );
+
+				$form_fields = array ( 'save' );
+				$method = '';
 
 				if ( false === ( $creds = request_filesystem_credentials( $url, $method, false, false, $form_fields ) ) ) {
 					return true; // stop the normal page form from displaying
