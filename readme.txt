@@ -4,7 +4,7 @@ Contributors: Springbox, ChrisWiegman, iislam
 Tags: Springbox, readmore, mobile, jQuery
 Requires at least: 3.5
 Tested up to: 3.6
-Stable tag: 1.2
+Stable tag: 1.3
 
 Use WordPress built-in <!--more--> tag to hide text on pages.
 
@@ -17,7 +17,7 @@ Use WordPress built-in <!--more--> tag to hide text on pages.
 
 This is particularly handy for a mobile site using pages with extrememly large content. This content will let you put a "more" link in the page and will then insert a javascript more button in the page itself which will show and hide the remainder of the content on the page. 
 
-Can be used with any theme, including sites that use multiple themes for mobile/desktop.
+Can be used with any theme, including sites that use multiple themes for mobile/desktop and it works with <a href="http://wordpress.org/plugins/any-mobile-theme-switcher/">Any Mobile Theme Switcher</a>.
 
 == Installation ==
 
@@ -27,6 +27,9 @@ Can be used with any theme, including sites that use multiple themes for mobile/
 4. Select the theme and other options under Settings->Better Read More
 
 == Changelog ==
+
+= 1.3 =
+* Works with <a href="http://wordpress.org/plugins/any-mobile-theme-switcher/">Any Mobile Theme Switcher</a>
 
 = 1.2 =
 * Fixed error message when settings are not yet saved

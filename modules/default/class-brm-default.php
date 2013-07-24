@@ -20,9 +20,18 @@ if ( ! class_exists( 'BRM_Default') ) {
 			add_action( 'admin_init', array( $this, 'initialize_admin' ) );
 			add_action( 'admin_enqueue_scripts', array( $this, 'admin_script' ) );
 
+			//execute front end options after any mobile switching plugins are loaded.
+			add_action( 'plugins_loaded', array( $this, 'load_brm' ) );
+
+		}
+
+		public function load_brm() {
+
+			global $amts_mobile_browser;
+
 			$current_theme = wp_get_theme();
 
-			if ( isset( $this->settings['themes'] ) && in_array( md5( $current_theme['Name'] ), $this->settings['themes'] ) ) {
+			if ( ( isset( $amts_mobile_browser ) && in_array( md5( $amts_mobile_browser ), $this->settings['themes'] ) ) || ( isset( $this->settings['themes'] ) && in_array( md5( $current_theme['Name'] ), $this->settings['themes'] ) ) ) {
 
 				add_action( 'wp_enqueue_scripts', array( $this, 'add_scripts' ) ); //Add front-end CSS and Javascript
 				add_filter( 'the_content', array( $this, 'read_more' ) ); //Filter the more tag
